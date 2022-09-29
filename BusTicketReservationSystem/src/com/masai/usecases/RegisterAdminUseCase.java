@@ -2,45 +2,37 @@ package com.masai.usecases;
 
 import java.util.Scanner;
 
+import com.masai.bean.Admin;
 import com.masai.dao.AdminDao;
 import com.masai.dao.AdminDaoImpl;
-
 public class RegisterAdminUseCase {
 	
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("Enter the Bus Name: ");
-		String busName = sc.next();
+		System.out.println("Enter Your Name");
+		String name = sc.next();
 		
-		System.out.println("Enter the Bus Route: ");
-		String busRoute = sc.next();
-		
-		System.out.println("A/C");
-		String AC = sc.next();
-		
-		System.out.println("Enter Seat Capacity: ");
-		int seatCapacity = sc.nextInt();
-		
-		System.out.println("Enter Arrival Time");
-		String arrival = sc.next();
-		
-		System.out.println("Enter Departure Time: ");
-		String departure = sc.next();
-		
-		System.out.println("Enter Your User ID: ");
+		System.out.println("Enter Your UserID");
 		String userId = sc.next();
 		
-		System.out.println("Enter Your Password: ");
+		System.out.println("Enter Your Password");
 		String password = sc.next();
 		
+		System.out.println("Enter Your Mobile");
+		String mobile = sc.next();
 		
 		AdminDao dao = new AdminDaoImpl();
 		
-		String result = dao.registerAdmin(busName, busRoute, AC, seatCapacity, arrival, departure, userId, password);
+		Admin admin = new Admin();
+		admin.setUserName(name);
+		admin.setUserId(userId);
+		admin.setPassword(password);
+		admin.setMobile(mobile);
 		
-		System.out.println(result);
+		
+		dao.registerAdmin(admin);
 	}
 	
 }
