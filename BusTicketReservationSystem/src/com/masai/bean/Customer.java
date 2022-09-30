@@ -2,22 +2,29 @@ package com.masai.bean;
 
 public class Customer {
 	
+	private int customerId;
 	private String name;
-	private long mobile;
+	private int mobile;
 	private String source;
 	private String destination;
+	private int ticketNo;
 	
 	public Customer() {
 		
 	}
 
-	public Customer(String name, long mobile, String source, String destination) {
+
+	public Customer(int customerId, String name, int mobile, String source, String destination, int ticketNo) {
 		super();
+		this.customerId = customerId;
 		this.name = name;
 		this.mobile = mobile;
 		this.source = source;
 		this.destination = destination;
+		this.ticketNo = ticketNo;
 	}
+
+
 
 	public String getName() {
 		return name;
@@ -27,11 +34,19 @@ public class Customer {
 		this.name = name;
 	}
 
-	public long getMobile() {
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
+	public int getMobile() {
 		return mobile;
 	}
 
-	public void setMobile(long mobile) {
+	public void setMobile(int mobile) {
 		this.mobile = mobile;
 	}
 
@@ -51,10 +66,18 @@ public class Customer {
 		this.destination = destination;
 	}
 
+	public int getTicketNo() {
+		return ticketNo;
+	}
+
+	public void setTicketNo(int ticketNo) {
+		this.ticketNo = ticketNo;
+	}
+
 	@Override
 	public String toString() {
-		return "Customer [name=" + name + ", mobile=" + mobile + ", source=" + source + ", destination=" + destination
-				+ "]";
+		return "Customer [name=" + name + ", customerId=" + customerId + ", mobile=" + mobile + ", source=" + source
+				+ ", destination=" + destination + ", ticketNo=" + ticketNo + "]";
 	}
 	
 	

@@ -2,23 +2,29 @@ package com.masai.bean;
 
 public class Bus {
 	
+	private int busId;
 	private String busName;
 	private String source;
 	private String destination;
-	private int busNo;
 	private int seatCapacity;
+	
+	
 	
 	public Bus() {
 		
 	}
 
-	public Bus(String busName, String source, String destination, int busNo, int seatCapacity) {
+
+	public Bus(int busId, String busName, String source, String destination, int seatCapacity) {
+		super();
+		this.busId = busId;
 		this.busName = busName;
 		this.source = source;
 		this.destination = destination;
-		this.busNo = busNo;
 		this.seatCapacity = seatCapacity;
 	}
+
+
 
 	public String getBusName() {
 		return busName;
@@ -26,6 +32,14 @@ public class Bus {
 
 	public void setBusName(String busName) {
 		this.busName = busName;
+	}
+
+	public int getBusId() {
+		return busId;
+	}
+
+	public void setBusId(int busId) {
+		this.busId = busId;
 	}
 
 	public String getSource() {
@@ -44,14 +58,6 @@ public class Bus {
 		this.destination = destination;
 	}
 
-	public int getBusNo() {
-		return busNo;
-	}
-
-	public void setBusNo(int busNo) {
-		this.busNo = busNo;
-	}
-
 	public int getSeatCapacity() {
 		return seatCapacity;
 	}
@@ -62,9 +68,10 @@ public class Bus {
 
 	@Override
 	public String toString() {
-		return "Bus [busName=" + busName + ", source=" + source + ", destination=" + destination + ", busNo=" + busNo
+		return "Bus [busName=" + busName + ", busId=" + busId + ", source=" + source + ", destination=" + destination
 				+ ", seatCapacity=" + seatCapacity + "]";
 	}
+	
 	
 	
 }

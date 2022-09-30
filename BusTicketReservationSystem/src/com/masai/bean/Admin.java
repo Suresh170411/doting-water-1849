@@ -2,8 +2,8 @@ package com.masai.bean;
 
 public class Admin {
 	
-	private String userName;
 	private String userId;
+	private String userName;
 	private String password;
 	private String mobile;
 	
@@ -11,12 +11,16 @@ public class Admin {
 		
 	}
 
-	public Admin(String userName, String userId, String password, String mobile) {
-		this.userName = userName;
+
+	public Admin(String userId, String userName, String password, String mobile) {
+		super();
 		this.userId = userId;
+		this.userName = userName;
 		this.password = password;
 		this.mobile = mobile;
 	}
+
+
 
 	public String getUserName() {
 		return userName;
@@ -26,20 +30,20 @@ public class Admin {
 		this.userName = userName;
 	}
 
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getMobile() {
@@ -52,9 +56,11 @@ public class Admin {
 
 	@Override
 	public String toString() {
-		return "Admin [userName=" + userName + ", userId=" + userId + ", password=" + password + ", mobile=" + mobile
+		return "Admin [userName=" + userName + ", password=" + password + ", userId=" + userId + ", mobile=" + mobile
 				+ "]";
 	}
+
+	
 	
 	
 }
