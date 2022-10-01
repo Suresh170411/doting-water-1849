@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.masai.bean.Bus;
+import com.masai.exceptions.BusException;
 import com.masai.utility.DBUtil;
 
 
@@ -42,34 +44,7 @@ public class BusDaoImpl implements BusDao {
 		return message;
 	}
 
-//	@Override
-//	public List<Bus> getBusDetails() {
-//		List<Bus> list_bus = new LinkedList<>();
-//		
-//		
-//		try(Connection conn = DBUtil.provideConnection()) {
-//
-//			PreparedStatement ps = conn.prepareStatement("select * from bus where source = ? AND destination = ?");
-//			
-//			Bus bus = new Bus();
-//			
-//			ps.setString(1, bus.getSource());
-//			ps.setString(2, bus.getDestination());
-//			
-//			ps.executeUpdate();
-//			
-//			BusDao dao = new BusDaoImpl();
-//			List<Bus> busList = dao.getBusDetails();
-//			
-//			
-//			System.out.println(busList);
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return list_bus;
-//	}
+
 
 	@Override
 	public List<Bus> getBusDetails(String source, String destination) {
@@ -111,8 +86,54 @@ public class BusDaoImpl implements BusDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		if(list_bus.size() == 0)
+			throw new BusException("No Records found..");
 		
 		return list_bus;
+		
+	}
+
+
+
+	@Override
+	public List<Bus> getAllBusDetails() throws BusException {
+		
+		List<Bus> list = new ArrayList<>();
+		
+		try(Connection conn = DBUtil.provideConnection()){
+			PreparedStatement ps = conn.prepareStatement("select * from bus");
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				int i = rs.getInt("busId");
+				String n = rs.getString("busName");
+				String s = rs.getString("source");
+				String d = rs.getString("destination");
+				String t = rs.getString("busType");
+				int c = rs.getInt("busSeats");
+				int ai = rs.getInt("busAdminId");
+				
+				
+				Bus bus = new Bus(i,n,s,d,t,c,ai);
+				list.add(bus);
+			}
+			
+			
+			
+		}catch (BusException b) {
+			System.out.println(b.getMessage());
+		
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+		if(list.size() == 0)
+			throw new BusException("No Records found..");
+		
+		return list;
 	}
 
 }
