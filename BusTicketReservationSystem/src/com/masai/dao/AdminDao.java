@@ -5,6 +5,6 @@ import com.masai.bean.Bus;
 
 public interface AdminDao {
 	
-	public String addAdmin(Admin admin);
-	public Bus adminLogin(String userName, String password);
+	public String registerAdmin(Admin admin);
+	public Admin loginAdmin(String adminEmail, String adminPassword);
 }

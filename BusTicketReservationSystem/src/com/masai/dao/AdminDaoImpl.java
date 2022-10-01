@@ -2,6 +2,7 @@ package com.masai.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.masai.bean.Admin;
@@ -12,54 +13,59 @@ import com.masai.utility.DBUtil;
 public class AdminDaoImpl implements AdminDao {
 
 	@Override
-	public String addAdmin(Admin admin) {
+	public String registerAdmin(Admin admin) {
+		String message = "Not Registered...!";
 		
-		String message = "Not Inserted..";
 		
-		try(Connection conn = DBUtil.provideConnection()){
+		try(Connection conn = DBUtil.provideConnection()) {
 			PreparedStatement ps = conn.prepareStatement("insert into admin values(?,?,?,?)");
 			
-			ps.setString(1,admin.getUserId());
-			ps.setString(2,admin.getUserName());
-			ps.setString(3,admin.getPassword());
-			ps.setString(4,admin.getMobile());
+			ps.setInt(1, admin.getAdminId());
+			ps.setString(2, admin.getAdminName());
+			ps.setString(3, admin.getAdminEmail());
+			ps.setString(4, admin.getAdminPassword());
 			
 			int x = ps.executeUpdate();
-			
-			if (x > 0) {
-				message = "Successfully inserted Admin data";
+			if (x>0) {
+				message = "Registration succussful..";
 			}
 			
-			
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return message;
 		
+		return message;
 	}
 
 	@Override
-	public Bus adminLogin(String userName, String password) {
+	public Admin loginAdmin(String adminEmail, String adminPassword) {
+		Admin admin = null;
 		
-		Bus bus = null;
-		
-		try(Connection conn = DBUtil.provideConnection()){
+		try (Connection conn = DBUtil.provideConnection()){
 			
-			PreparedStatement ps = conn.prepareStatement("select * from bus where admin.userId='1100' AND admin.password='12345'");
-			int x = ps.executeUpdate();
+			PreparedStatement ps = conn.prepareStatement("select * from admin where adminEmail = ? AND adminPassword = ?");
 			
-			if(x>0) {
-				System.out.println("BUS Details");
+			ps.setString(1, adminEmail);
+			ps.setString(2, adminPassword);
+			
+//			int x = ps.executeUpdate();
+			ResultSet rs =  ps.executeQuery();
+
+			
+			if (rs.next()) {
+				System.out.println("Login Successful..");
+			}else {
+				System.out.println("Invalid credentials...!");
 			}
 			
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		
-		return bus;
-		
+		return admin;
 	}
+
+	
 	
 }

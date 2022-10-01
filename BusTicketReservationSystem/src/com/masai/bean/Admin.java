@@ -2,65 +2,71 @@ package com.masai.bean;
 
 public class Admin {
 	
-	private String userId;
-	private String userName;
-	private String password;
-	private String mobile;
+	private int adminId;
+	private String adminName;
+	private String adminEmail;
+	private String adminPassword;
+	
 	
 	public Admin() {
 		
 	}
 
 
-	public Admin(String userId, String userName, String password, String mobile) {
+	public Admin(int adminId, String adminName, String adminEmail, String adminPassword) {
 		super();
-		this.userId = userId;
-		this.userName = userName;
-		this.password = password;
-		this.mobile = mobile;
+		this.adminId = adminId;
+		this.adminName = adminName;
+		this.adminEmail = adminEmail;
+		this.adminPassword = adminPassword;
 	}
 
 
-
-	public String getUserName() {
-		return userName;
+	public int getAdminId() {
+		return adminId;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+
+	public void setAdminId(int adminId) {
+		this.adminId = adminId;
 	}
 
-	public String getPassword() {
-		return password;
+
+	public String getAdminName() {
+		return adminName;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+
+	public void setAdminName(String adminName) {
+		this.adminName = adminName;
 	}
 
-	public String getUserId() {
-		return userId;
+
+	public String getAdminEmail() {
+		return adminEmail;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+
+	public void setAdminEmail(String adminEmail) {
+		this.adminEmail = adminEmail;
 	}
 
-	public String getMobile() {
-		return mobile;
+
+	public String getAdminPassword() {
+		return adminPassword;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+
+	public void setAdminPassword(String adminPassword) {
+		this.adminPassword = adminPassword;
 	}
+
 
 	@Override
 	public String toString() {
-		return "Admin [userName=" + userName + ", password=" + password + ", userId=" + userId + ", mobile=" + mobile
-				+ "]";
+		return "Admin [adminId=" + adminId + ", adminName=" + adminName + ", adminEmail=" + adminEmail
+				+ ", adminPassword=" + adminPassword + "]";
 	}
 
-	
-	
 	
 }

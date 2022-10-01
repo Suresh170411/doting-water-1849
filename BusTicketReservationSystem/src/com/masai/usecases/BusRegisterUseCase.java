@@ -12,11 +12,6 @@ public class BusRegisterUseCase {
 		
 		Scanner sc = new Scanner(System.in);
 		
-//		private int busId;
-//		private String busName;
-//		private String source;
-//		private String destination;
-//		private int seatCapacity;
 		
 		System.out.println("Enter Bus ID: ");
 		int i = sc.nextInt();
@@ -30,8 +25,14 @@ public class BusRegisterUseCase {
 		System.out.println("Enter Destination: ");
 		String d = sc.next();
 		
+		System.out.println("Enter Bus Type: ");
+		String t = sc.next();
+		
 		System.out.println("Enter Seat Capacity: ");
 		int c = sc.nextInt();
+		
+		System.out.println("Enter Bus Admin ID: ");
+		int a = sc.nextInt();
 		
 		Bus bus = new Bus();
 		
@@ -39,10 +40,12 @@ public class BusRegisterUseCase {
 		bus.setBusName(n);
 		bus.setSource(s);
 		bus.setDestination(d);
-		bus.setSeatCapacity(c);
+		bus.setBusType(t);
+		bus.setBusSeats(c);
+		bus.setBusAdminId(a);
 		
 		BusDao dao = new BusDaoImpl();
-		String res = dao.addBus(bus);
+		String res = dao.registerBus(bus);
 		
 		System.out.println(res);
 		
