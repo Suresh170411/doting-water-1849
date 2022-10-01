@@ -12,14 +12,14 @@ public class CustomerRegisterUseCase {
 		
 		Scanner sc = new Scanner(System.in);
 		
+		System.out.println("Enter Mobile Number: ");
+		String m = sc.next();
+		
 		System.out.println("Enter Customer ID: ");
 		int i = sc.nextInt();
 		
 		System.out.println("Enter Customer Name: ");
 		String n = sc.next();
-		
-		System.out.println("Enter Mobile Number: ");
-		int m = sc.nextInt();
 		
 		System.out.println("Enter Source: ");
 		String s = sc.next();
@@ -27,20 +27,30 @@ public class CustomerRegisterUseCase {
 		System.out.println("Enter Destination: ");
 		String d = sc.next();
 		
+		System.out.println("Enter Bus Type");
+		String t = sc.next();
+		
 		System.out.println("Enter Number of Tickets: ");
-		int t = sc.nextInt();
+		int ti = sc.nextInt();
+		
+		
+		System.out.println("Enter Bus Admin ID: ");
+		int ad = sc.nextInt();
 		
 		
 		Customer customer = new Customer();
-		customer.setCustomerId(i);
-		customer.setName(n);
 		customer.setMobile(m);
+		customer.setBusId(i);
+		customer.setBusName(n);
 		customer.setSource(s);
 		customer.setDestination(d);
-		customer.setTicketNo(t);
+		customer.setBusType(t);
+		customer.setBookSeats(ti);
+		customer.setBusAdminId(ad);
+		
 		
 		CustomerDao dao = new CustomerDaoImpl();
-		String res = dao.addCustomer(customer);
+		String res = dao.registerCustomer(customer);
 		
 		System.out.println(res);
 	}

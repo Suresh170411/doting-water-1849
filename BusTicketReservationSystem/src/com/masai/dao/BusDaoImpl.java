@@ -136,4 +136,78 @@ public class BusDaoImpl implements BusDao {
 		return list;
 	}
 
+
+
+	@Override
+	public String bookTickets(String source, String destination, int tickets) throws BusException {
+		
+		String message = "Please Provide valid input";
+		
+		
+		try (Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("UPDATE bus set busSeats = busSeats - ? where source = ? AND destination = ?");
+			
+			ps.setString(2, source);
+			ps.setString(3, destination);
+			ps.setInt(1, tickets);
+			
+			int x = ps.executeUpdate();
+			
+			if(x > 0) {
+				message = "Ticket booked Successfully..";
+			}
+//			
+//			ResultSet rs = ps.executeQuery();
+//			
+//			if(rs.next()) {
+//				int t = rs.getInt(tickets);
+//				message = "Ticket booked successfully..";
+//			}
+			
+		} catch (SQLException e) {
+			int availabeTickets = this.availableTickets(source, destination);
+			if(availabeTickets == 0) {
+				throw new BusException("Bus is full Try another bus..");
+			}else {
+				throw new BusException("available tickcets"+availabeTickets);
+			}
+		}
+		
+		return message;
+		
+	}
+
+
+
+	@Override
+	public int availableTickets(String source, String destination) throws BusException {
+		int x = 0;
+		
+		try (Connection conn = DBUtil.provideConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement("select busSeats from bus where source=? AND destination=?");
+			
+			
+			ps.setString(1, source);
+			ps.setString(2, destination);
+			
+			ResultSet rs = ps.executeQuery();
+			
+//			if(n > 0) {
+//				Bus bus = new Bus();
+//				x = bus.getBusSeats();
+//			}
+			if (rs.next()) {
+				x = rs.getInt("busSeats");
+				
+			}
+			
+		} catch (SQLException e) {
+			throw new BusException("No seats available for this bus..");
+		}
+		
+		return x;
+	}
+
 }

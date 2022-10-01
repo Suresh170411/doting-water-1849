@@ -4,6 +4,6 @@ import com.masai.bean.Customer;
 
 public interface CustomerDao {
 	
-	public String addCustomer(Customer customer);
+	public String registerCustomer(Customer customer);
 	
 }
