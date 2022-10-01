@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-
 import com.masai.bean.Bus;
 import com.masai.exceptions.BusException;
 import com.masai.utility.DBUtil;
@@ -15,199 +13,241 @@ import com.masai.utility.DBUtil;
 
 public class BusDaoImpl implements BusDao {
 
-	@Override
-	public String registerBus(Bus bus) {
-		String message = "Not Inserted...";
-		
-			try(Connection conn = DBUtil.provideConnection()){
+	
+
+	public List<Bus> getEmptyBuses() throws BusException {
+
+		List<Bus> buses = new ArrayList<>();
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("select * from buses where bSeats = 0");
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
 				
-				PreparedStatement ps = conn.prepareStatement("insert into bus values(?,?,?,?,?,?,?)");
-				ps.setInt(1, bus.getBusId());
-				ps.setString(2, bus.getBusName());
-				ps.setString(3, bus.getSource());
-				ps.setString(4, bus.getDestination());
-				ps.setString(5, bus.getBusType());
-				ps.setInt(6, bus.getBusSeats());
-				ps.setInt(7, bus.getBusAdminId());
+			int i = rs.getInt("bId");
+			String n = rs.getString("bName");
+			String s = rs.getString("source");
+			String d = rs.getString("destination");
+			String t = rs.getString("bType");
+			int c = rs.getInt("bSeats");
+			int ai = rs.getInt("bAdminId");
+			String bn = rs.getString("bConPerName");
+			String m = rs.getString("bConPerMobile");
+
+			Bus bus = new Bus(i,n,s,d,t,c,ai,bn,m);
 				
-				int x = ps.executeUpdate();
-				
-				if(x > 0) {
-					message = "Insertion successful..!";
-				}
-				
-				
-			}catch (SQLException e) {
-				e.printStackTrace();
+				buses.add(bus);
 			}
-		
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		if (buses.size() == 0)
+			throw new BusException("No bus found with 0 seats for this Search.");
+
+		return buses;
+
+	}
+
+	public String removeBusById(int bId) {
+		String message = "Bus not found with ID " + bId;
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("delete from buses where bId = ? AND bSeats = 0");
+
+			ps.setInt(1, bId);
+
+			int x = ps.executeUpdate();
+
+			if (x > 0)
+				message = " Bus with ID " + bId + " removed from database.";
+
+		} catch (SQLException e) {
+			message = e.getMessage();
+		}
+
 		return message;
 	}
 
-
-
 	@Override
-	public List<Bus> getBusDetails(String source, String destination) {
-		
-		List<Bus> list_bus = new LinkedList<>();
-		
-		
-		try(Connection conn = DBUtil.provideConnection()) {
-			
-			PreparedStatement ps = conn.prepareStatement("select * from bus where source = ? AND destination = ?");
-			
-			ps.setString(1, source);
-			ps.setString(2, destination);
-			
-			ResultSet rs = ps.executeQuery();
-//			
-//			private int busId;
-//			private String busName;
-//			private String source;
-//			private String destination;
-//			private String busType;
-//			private int busSeats;
-//			private int busAdminId;
-			
-			while (rs.next()) {
-				int i = rs.getInt("busId");
-				String n = rs.getString("busName");
-				String s = rs.getString("source");
-				String d = rs.getString("destination");
-				String t = rs.getString("busType");
-				int c = rs.getInt("busSeats");
-				int ai = rs.getInt("busAdminId");
-				
-				
-				Bus bus = new Bus(i,n,s,d,t,c,ai);
-				list_bus.add(bus);
-			}
-			
+	public String registerNewBus(Bus bus) {
+		String message = "Enterd data is Already Present.";
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("insert into buses values (?,?,?,?,?,?,?,?,?)");
+
+			ps.setInt(1, bus.getbId());
+			ps.setString(2, bus.getbName());
+			ps.setString(3, bus.getSource());
+			ps.setString(4, bus.getDestination());
+			ps.setString(5, bus.getbType());
+			ps.setInt(6, bus.getbSeats());
+			ps.setInt(7, bus.getbAdminId());
+			ps.setString(8, bus.getbConPerName());
+			ps.setString(9, bus.getbConPerMobile());
+
+			int x = ps.executeUpdate();
+
+			if (x > 0)
+				message = bus.getbName() + " Bus Registered Succesfully...";
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			message = e.getMessage();
 		}
-		if(list_bus.size() == 0)
-			throw new BusException("No Records found..");
-		
-		return list_bus;
-		
+
+		return message;
 	}
 
-
-
+	
+	
 	@Override
 	public List<Bus> getAllBusDetails() throws BusException {
-		
-		List<Bus> list = new ArrayList<>();
-		
-		try(Connection conn = DBUtil.provideConnection()){
-			PreparedStatement ps = conn.prepareStatement("select * from bus");
-			
+		List<Bus> buses = new ArrayList<>();
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("select * from buses");
+
 			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				int i = rs.getInt("busId");
-				String n = rs.getString("busName");
+
+			while (rs.next()) {
+				int i = rs.getInt("bId");
+				String n = rs.getString("bName");
 				String s = rs.getString("source");
 				String d = rs.getString("destination");
-				String t = rs.getString("busType");
-				int c = rs.getInt("busSeats");
-				int ai = rs.getInt("busAdminId");
-				
-				
-				Bus bus = new Bus(i,n,s,d,t,c,ai);
-				list.add(bus);
+				String t = rs.getString("bType");
+				int c = rs.getInt("bSeats");
+				int ai = rs.getInt("bAdminId");
+				String bn = rs.getString("bConPerName");
+				String m = rs.getString("bConPerMobile");
+
+				Bus bus = new Bus(i,n,s,d,t,c,ai,bn,m);
+
+				buses.add(bus);
 			}
-			
-			
-			
-		}catch (BusException b) {
-			System.out.println(b.getMessage());
-		
+
 		} catch (SQLException e) {
-			
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
-		
-		
-		if(list.size() == 0)
-			throw new BusException("No Records found..");
-		
-		return list;
+
+		if (buses.size() == 0)
+			throw new BusException("No Buses are Available right Now..");
+
+		return buses;
 	}
 
+	public Bus bookTicket(String source, String destination, int tickets, String mobileNo) throws BusException {
 
+		Bus bus = new Bus();
 
-	@Override
-	public String bookTickets(String source, String destination, int tickets) throws BusException {
-		
-		String message = "Please Provide valid input";
-		
-		
-		try (Connection conn = DBUtil.provideConnection()){
-			
-			PreparedStatement ps = conn.prepareStatement("UPDATE bus set busSeats = busSeats - ? where source = ? AND destination = ?");
-			
-			ps.setString(2, source);
-			ps.setString(3, destination);
-			ps.setInt(1, tickets);
-			
-			int x = ps.executeUpdate();
-			
-			if(x > 0) {
-				message = "Ticket booked Successfully..";
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement pst = conn.prepareStatement("update buses set bSeats = bSeats - ? where source = ? AND destination = ?");
+
+			pst.setInt(1, tickets);
+			pst.setString(2, source);
+			pst.setString(3, destination);
+
+			int x = pst.executeUpdate();
+
+			if (x > 0) {
+
+				PreparedStatement ps = conn.prepareStatement("select * from buses where source = ? AND destination = ?");
+
+				ps.setString(1, source);
+				ps.setString(2, destination);
+
+				ResultSet rs = ps.executeQuery();
+
+				if (rs.next()) {
+
+					int i = rs.getInt("bId");
+					String n = rs.getString("bName");
+					String s = rs.getString("source");
+					String d = rs.getString("destination");
+					String t = rs.getString("bType");
+					int c = rs.getInt("bSeats");
+					int ai = rs.getInt("bAdminId");
+					String bn = rs.getString("bConPerName");
+					String m = rs.getString("bConPerMobile");
+
+					bus = new Bus(i,n,s,d,t,c,ai,bn,m);
+
+				}
 			}
-//			
-//			ResultSet rs = ps.executeQuery();
-//			
-//			if(rs.next()) {
-//				int t = rs.getInt(tickets);
-//				message = "Ticket booked successfully..";
-//			}
-			
+
 		} catch (SQLException e) {
-			int availabeTickets = this.availableTickets(source, destination);
-			if(availabeTickets == 0) {
-				throw new BusException("Bus is full Try another bus..");
-			}else {
-				throw new BusException("available tickcets"+availabeTickets);
-			}
+			int avalTickets = this.noOfTicketsAval(source, destination);
+			if (avalTickets == 0)
+				throw new BusException("This Bus is already Full. Please select another Bus");
+			else
+				throw new BusException("Ticket not available.\nOnly " + avalTickets + " tickets avaliable right now.");
 		}
-		
-		return message;
-		
+
+		return bus;
 	}
 
-
-
 	@Override
-	public int availableTickets(String source, String destination) throws BusException {
-		int x = 0;
-		
-		try (Connection conn = DBUtil.provideConnection()){
-			
-			PreparedStatement ps = conn.prepareStatement("select busSeats from bus where source=? AND destination=?");
-			
-			
+	public int noOfTicketsAval(String source, String destination) {
+		int avalTicket = 0;
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("select bSeats from buses where source = ? AND destination = ?");
+
 			ps.setString(1, source);
 			ps.setString(2, destination);
-			
+
 			ResultSet rs = ps.executeQuery();
-			
-//			if(n > 0) {
-//				Bus bus = new Bus();
-//				x = bus.getBusSeats();
-//			}
+
 			if (rs.next()) {
-				x = rs.getInt("busSeats");
-				
+				avalTicket = rs.getInt("bSeats");
 			}
-			
+
 		} catch (SQLException e) {
-			throw new BusException("No seats available for this bus..");
+			System.out.println(e.getMessage());
 		}
-		
-		return x;
+
+		return avalTicket;
 	}
 
+	@Override
+	public Bus getBus(String source, String destination) {
+		Bus bus = new Bus();
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("select * from buses where source = ? AND destination = ?");
+
+			ps.setString(1, source);
+			ps.setString(2, destination);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int i = rs.getInt("bId");
+				String n = rs.getString("bName");
+				String s = rs.getString("source");
+				String d = rs.getString("destination");
+				String t = rs.getString("bType");
+				int c = rs.getInt("bSeats");
+				int ai = rs.getInt("bAdminId");
+				String bn = rs.getString("bConPerName");
+				String m = rs.getString("bConPerMobile");
+
+				bus = new Bus(i,n,s,d,t,c,ai,bn,m);
+
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return bus;
+	}
 }

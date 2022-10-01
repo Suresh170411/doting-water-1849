@@ -4,65 +4,71 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import com.masai.bean.Admin;
-import com.masai.bean.Bus;
-import com.masai.exceptions.BusException;
+import com.masai.exceptions.AdminException;
 import com.masai.utility.DBUtil;
 
 public class AdminDaoImpl implements AdminDao {
 
+	
 	@Override
 	public String registerAdmin(Admin admin) {
-		String message = "Not Registered...!";
-		
-		
-		try(Connection conn = DBUtil.provideConnection()) {
-			PreparedStatement ps = conn.prepareStatement("insert into admin values(?,?,?,?)");
-			
-			ps.setInt(1, admin.getAdminId());
-			ps.setString(2, admin.getAdminName());
-			ps.setString(3, admin.getAdminEmail());
-			ps.setString(4, admin.getAdminPassword());
-			
+
+		String message = "Not registered...";
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("insert into admin values (?,?,?,?)");
+
+			ps.setInt(1, admin.getaId());
+			ps.setString(2, admin.getaName());
+			ps.setString(3, admin.getaEmail());
+			ps.setString(4, admin.getaPass());
+
 			int x = ps.executeUpdate();
-			if (x>0) {
-				message = "Registration succussful..";
-			}
-			
+
+			if (x > 0)
+				message = "Admin Registered Succesfully...";
+			else
+				message = "Admin data is already present inside the DataBase...";
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			message = e.getMessage();
 		}
-		
-		
+
 		return message;
 	}
 
 	@Override
-	public Admin loginAdmin(String adminEmail, String adminPassword) {
-		Admin admin = null;
-		
-		try (Connection conn = DBUtil.provideConnection()){
-			
-			PreparedStatement ps = conn.prepareStatement("select * from admin where adminEmail = ? AND adminPassword = ?");
-			
-			ps.setString(1, adminEmail);
-			ps.setString(2, adminPassword);
-			
-//			int x = ps.executeUpdate();
-			ResultSet rs =  ps.executeQuery();
+	public Admin loginAdmin(String email, String password) throws AdminException {
 
-			
+		Admin admin = null;
+
+		try (Connection conn = DBUtil.provideConnection()) {
+
+			PreparedStatement ps = conn.prepareStatement("select * from admin where aEmail = ? AND aPass = ?");
+
+			ps.setString(1, email);
+			ps.setString(2, password);
+
+			ResultSet rs = ps.executeQuery();
+
 			if (rs.next()) {
-				System.out.println("Login Successful..");
-			}else {
-				System.out.println("Invalid credentials...!");
+				int aId = rs.getInt("aId");
+				String aName = rs.getString("aName");
+				String aEmail = rs.getString("aEmail");
+				String aPass = rs.getString("aPass");
+
+				admin = new Admin(aId, aName, aEmail, aPass);
 			}
-			
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
-		
+
+		if (admin == null)
+			throw new AdminException("Invalid Credentials..");
+
 		return admin;
 	}
 

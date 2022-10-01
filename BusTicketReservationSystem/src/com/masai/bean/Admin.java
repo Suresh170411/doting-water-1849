@@ -1,72 +1,60 @@
 package com.masai.bean;
 
 public class Admin {
-	
-	private int adminId;
-	private String adminName;
-	private String adminEmail;
-	private String adminPassword;
-	
-	
+
+	private int aId;
+	private String aName;
+	private String aEmail;
+	private String aPass;
+
 	public Admin() {
 		
 	}
 
-
-	public Admin(int adminId, String adminName, String adminEmail, String adminPassword) {
-		super();
-		this.adminId = adminId;
-		this.adminName = adminName;
-		this.adminEmail = adminEmail;
-		this.adminPassword = adminPassword;
+	public Admin(int aId, String aName, String aEmail, String aPass) {
+		this.aId = aId;
+		this.aName = aName;
+		this.aEmail = aEmail;
+		this.aPass = aPass;
 	}
 
-
-	public int getAdminId() {
-		return adminId;
+	public int getaId() {
+		return aId;
 	}
 
-
-	public void setAdminId(int adminId) {
-		this.adminId = adminId;
+	public void setaId(int aId) {
+		this.aId = aId;
 	}
 
-
-	public String getAdminName() {
-		return adminName;
+	public String getaName() {
+		return aName;
 	}
 
-
-	public void setAdminName(String adminName) {
-		this.adminName = adminName;
+	public void setaName(String aName) {
+		this.aName = aName;
 	}
 
-
-	public String getAdminEmail() {
-		return adminEmail;
+	public String getaEmail() {
+		return aEmail;
 	}
 
-
-	public void setAdminEmail(String adminEmail) {
-		this.adminEmail = adminEmail;
+	public void setaEmail(String aEmail) {
+		this.aEmail = aEmail;
 	}
 
-
-	public String getAdminPassword() {
-		return adminPassword;
+	public String getaPass() {
+		return aPass;
 	}
 
-
-	public void setAdminPassword(String adminPassword) {
-		this.adminPassword = adminPassword;
+	public void setaPass(String aPass) {
+		this.aPass = aPass;
 	}
-
 
 	@Override
 	public String toString() {
-		return "Admin [adminId=" + adminId + ", adminName=" + adminName + ", adminEmail=" + adminEmail
-				+ ", adminPassword=" + adminPassword + "]";
+		return "Admin [aId=" + aId + ", aName=" + aName + ", aEmail=" + aEmail + ", aPass=" + aPass + "]";
 	}
 
 	
+
 }

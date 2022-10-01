@@ -7,14 +7,18 @@ import com.masai.exceptions.BusException;
 
 public interface BusDao {
 	
-	public String registerBus(Bus bus);
+	public String registerNewBus(Bus bus);
 	
+	public List<Bus> getEmptyBuses() throws BusException;
+
+	public String removeBusById(int bId);
+
 	public List<Bus> getAllBusDetails() throws BusException;
-	
-	public List<Bus> getBusDetails(String source, String destination) throws BusException;
-	
-	public int availableTickets(String source, String destination) throws BusException;
-	
-	public String bookTickets(String source, String destination, int tickets) throws BusException;
+
+	public Bus bookTicket(String source, String destination, int tickets, String mobileNo) throws BusException;
+
+	public int noOfTicketsAval(String source, String destination);
+
+	public Bus getBus(String source, String destination);
 	
 }
