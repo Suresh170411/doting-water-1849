@@ -23,6 +23,7 @@ public class DBUtil {
 		
 		try {
 			conn= DriverManager.getConnection(url,"root","root");
+			
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
